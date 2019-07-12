@@ -7,4 +7,4 @@ jobs:
     steps:
       - checkout
       - run: python3 -m pip install --user -r requirements.txt
-      - run: python3 -m unittest discover test
+      - run: python3 -m unittest discover pyminder/test
