@@ -1,0 +1,10 @@
+version: 2.1
+jobs:
+  build:
+    working_directory: ~
+    docker:
+      - image: circleci/python:3.6.4
+    steps:
+      - checkout
+      - run: python3 -m pip install --user -r requirements.txt
+      - run: python3 -m unittest discover test
