@@ -10,7 +10,7 @@ class Pyminder:
         self._beeminder = beeminder
         self._goal_factory = goal_factory
 
-        self._beeminder.set_user(user)
+        self._beeminder.set_username(user)
         self._beeminder.set_token(token)
 
     def get_goals(self):
