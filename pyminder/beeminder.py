@@ -16,16 +16,13 @@ class Beeminder:
 
     # User
 
-    def get_user(self, username=None):
-        if username is None:
-            username = self._username
-
-        return self._call(f'users/{username}/goals.json')
+    def get_user(self):
+        return self._call(f'users/{self._username}/goals.json')
 
     # Goal
 
-    def get_goal(self):
-        pass
+    def get_goal(self, goal_name):
+        return self._call(f'users/{self._username}/goals/{goal_name}.json')
 
     def get_goals(self):
         return self._call(f'users/{self._username}/goals.json')
