@@ -64,14 +64,18 @@ class Beeminder:
         data.update({'auth_token': self._token})
 
         url = f'{self._base_url}{endpoint}'
+        result = None
 
         if method == 'GET':
-            return requests.get(url, data).json()
+            result = requests.get(url, data)
 
         if method == 'POST':
-            return requests.post(url, data).json()
+            result = requests.post(url, data)
 
         if method == 'PUT':
-            return requests.put(url, data).json()
+            result = requests.put(url, data)
 
-        return None
+        if not result.status_code == requests.codes.ok:
+            raise Exception('API request failed')
+
+        return None if result is None else result.json()
