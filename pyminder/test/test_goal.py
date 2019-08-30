@@ -62,11 +62,22 @@ class TestPyminder(TestCase):
 
         self.assertEqual(2, goal.get_road_val(self._day*3))
 
-    def test_get_road_val_with_progressively_future_times(self):
-        pass
+    def test_get_road_val_beyond_road_end(self):
+        goal = self._build_goal({"fullroad": [[0, 0, 1]]})
+
+        self.assertEqual(1, goal.get_road_val(self._day))
+
+    def test_get_road_val_far_beyond_road_end(self):
+        goal = self._build_goal({"fullroad": [[0, 0, 1]]})
+
+        self.assertEqual(10, goal.get_road_val(self._day*10))
 
     def test_stage_rate_change_beyond_end_of_path(self):
-        pass
+        goal = self._build_goal({"fullroad": [[0, 0, 0]]})
+
+        goal.stage_rate_change(1, self._day*5, self._day*10)
+
+        self.assertEqual(5, goal.get_road_val(self._day * 10))
 
 
 if __name__ == '__main__':
