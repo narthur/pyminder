@@ -1,15 +1,17 @@
 import requests
+import os
+import json
 
 
 class Beeminder:
     _base_url = 'https://www.beeminder.com/api/v1/'
-    _username = None
+    _user = None
     _token = None
 
     # Auth
 
     def set_username(self, username):
-        self._username = username
+        self._user = username
 
     def set_token(self, token):
         self._token = token
@@ -17,15 +19,15 @@ class Beeminder:
     # User
 
     def get_user(self):
-        return self._call(f'users/{self._username}/goals.json')
+        return self._call(f'users/{self._user}/goals.json')
 
     # Goal
 
     def get_goal(self, goal_name):
-        return self._call(f'users/{self._username}/goals/{goal_name}.json')
+        return self._call(f'users/{self._user}/goals/{goal_name}.json')
 
     def get_goals(self):
-        return self._call(f'users/{self._username}/goals.json')
+        return self._call(f'users/{self._user}/goals.json')
 
     def create_goal(self):
         pass
@@ -35,8 +37,8 @@ class Beeminder:
 
     # Datapoint
 
-    def get_datapoints(self):
-        pass
+    def get_datapoints(self, goal_name):
+        return self._call(f'/users/{self._user}/goals/{goal_name}/datapoints.json')
 
     def create_datapoint(self):
         pass
@@ -76,6 +78,17 @@ class Beeminder:
             result = requests.put(url, data)
 
         if not result.status_code == requests.codes.ok:
-            raise Exception('API request failed')
+            raise Exception(f'API request failed with code {result.status_code}')
+
+        # self._persist_result(endpoint, result)
 
         return None if result is None else result.json()
+
+    @staticmethod
+    def _persist_result(endpoint, result):
+        path = f'data/{endpoint}'
+        dir_ = os.path.dirname(path)
+        if not os.path.exists(dir_):
+            os.makedirs(dir_)
+        with open(path, "w") as f:
+            f.write(json.dumps(result.json()))
