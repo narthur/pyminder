@@ -21,7 +21,7 @@ conflicts of dependencies.
 - Check that expected files are included: `tar tzf dist/pyminder-{ version }.tar.gz`
 - `twine check dist/*`
 - Test publish: `twine upload --repository-url https://test.pypi.org/legacy/ dist/*`
-- Publish: `twine upload dist/*`
+- Publish using PyPi credentials: `twine upload dist/*`
 
 ## Information
 
