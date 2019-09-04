@@ -14,4 +14,4 @@ class GoalFactory:
     def get_goals(self):
         raw_goals = self._beeminder.get_goals()
 
-        return [self._factory.secure(Goal, data=raw_goal) for raw_goal in raw_goals]
+        return [self._factory.make(Goal, data=raw_goal) for raw_goal in raw_goals]

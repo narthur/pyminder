@@ -18,6 +18,16 @@ class TestPyminder(TestCase):
 
         self.assertEqual("My Goal", goals[0].title)
 
+    def test_makes_discrete_goals(self):
+        self._mock_beeminder.get_goals.return_value = [
+            {"title": "Goal 1"},
+            {"title": "Goal 2"},
+        ]
+
+        goals = self._goal_factory.get_goals()
+
+        self.assertNotEqual(goals[0].title, goals[1].title)
+
 
 if __name__ == '__main__':
     unittest.main()
