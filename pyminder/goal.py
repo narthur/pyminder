@@ -67,8 +67,9 @@ class Goal:
         return [p for p in self._datapoints if 'id' not in p]
 
     def get_needed(self, time):
+        time_adjusted = time - (self.deadline or 0)
         lanewidth = self.lanewidth or 0
-        critical_edge = self.get_road_val(time) - lanewidth
+        critical_edge = self.get_road_val(time_adjusted) - lanewidth
         return max(critical_edge - self.get_data_sum(time), 0)
 
     def get_data_sum(self, time):

@@ -268,6 +268,18 @@ class TestGoal(TestCase):
 
         self.assertEqual(0, goal.get_needed(self._day))
 
+    def test_get_needed_uses_deadline(self):
+        rate = 1
+        goal = self._build_goal({
+            "fullroad": [
+                [0, 0, 0],
+                [self._day * 7, rate * 7, rate]
+            ],
+            "deadline": -15 * 3600
+        })
+
+        self.assertEqual(2, goal.get_needed(self._day * 1.9))
+
 
 if __name__ == '__main__':
     unittest.main()
