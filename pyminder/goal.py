@@ -91,10 +91,13 @@ class Goal:
 
         self._extend_path(time)
 
-        initial_val = self.fullroad[0][1]
-        filtered_rates = [rate for _time, rate in self._dense_path.items() if _time <= time]
+        past_rows = [r for r in self.fullroad if r[0] <= time]
+        start_row = past_rows[-1] if past_rows else None
+        start_time = start_row[0] if start_row else 0
+        start_value = start_row[1] if start_row else 0
+        filtered_rates = [rate for _time, rate in self._dense_path.items() if start_time < _time <= time]
 
-        return sum(filtered_rates) + initial_val
+        return sum(filtered_rates) + start_value
 
     def _extend_path(self, time):
         if not self._dense_path:

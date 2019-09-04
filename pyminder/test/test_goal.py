@@ -70,7 +70,7 @@ class TestGoal(TestCase):
 
         goal.stage_rate_change(1, 0, self._day)
 
-        self.assertEqual(2, goal.get_road_val(self._day * 3))
+        self.assertEqual(1, goal.get_road_val(self._day * 3))
 
     def test_get_road_val_beyond_road_end(self):
         goal = self._build_goal({"fullroad": [
