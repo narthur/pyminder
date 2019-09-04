@@ -224,7 +224,7 @@ class TestGoal(TestCase):
             [self._day * 7, rate * 7, rate]
         ]})
 
-        goal.stage_rate_change(2, self._day*3)
+        goal.stage_rate_change(2, self._day * 3)
         goal.commit_road()
 
         self._mock_beeminder.update_goal.assert_any_call('the_slug', roadall=[
@@ -255,6 +255,18 @@ class TestGoal(TestCase):
         goal.reset_road()
 
         self._mock_beeminder.get_goal.assert_any_call('the_slug')
+
+    def test_get_needed_uses_lane_width(self):
+        rate = 1
+        goal = self._build_goal({
+            "fullroad": [
+                [0, 0, 0],
+                [self._day * 7, rate * 7, rate]
+            ],
+            "lanewidth": 1
+        })
+
+        self.assertEqual(0, goal.get_needed(self._day))
 
 
 if __name__ == '__main__':

@@ -67,7 +67,9 @@ class Goal:
         return [p for p in self._datapoints if 'id' not in p]
 
     def get_needed(self, time):
-        return max(self.get_road_val(time) - self.get_data_sum(time), 0)
+        lanewidth = self.lanewidth or 0
+        critical_edge = self.get_road_val(time) - lanewidth
+        return max(critical_edge - self.get_data_sum(time), 0)
 
     def get_data_sum(self, time):
         return sum([p['value'] for p in self._datapoints if p['timestamp'] <= time])
