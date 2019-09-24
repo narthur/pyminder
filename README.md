@@ -25,7 +25,7 @@ rate = goal.rate
 # Note: These functions probably contain bugs! Issues & pull requests welcome.
 # https://github.com/narthur/pyminder/blob/master/pyminder/goal.py
 now = time.time()
-sum = goal.get_data_sum(now)
+sum_ = goal.get_data_sum(now)
 needed = goal.get_needed(now)
 ```
 
