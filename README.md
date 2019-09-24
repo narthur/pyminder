@@ -11,7 +11,7 @@ from natlibpy.factory import Factory
 from pyminder.pyminder import Pyminder
 
 factory = Factory()
-pyminder = factory.secure(Pyminder)
+pyminder = factory.secure(Pyminder, user='[your username]', token='[your api token]')
 
 goals = pyminder.get_goals()
 goal = goals[0]
