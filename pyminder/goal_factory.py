@@ -15,3 +15,8 @@ class GoalFactory:
         raw_goals = self._beeminder.get_goals()
 
         return [self._factory.make(Goal, data=raw_goal) for raw_goal in raw_goals]
+
+    def get_goal(self, slug):
+        raw_goal = self._beeminder.get_goal(slug)
+
+        return self._factory.make(Goal, data=raw_goal)

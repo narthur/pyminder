@@ -30,6 +30,16 @@ class TestPyminder(TestCase):
 
         self.assertIsInstance(goals[0], Goal)
 
+    def test_get_goal(self):
+        self._pyminder.get_goal('slug')
+
+        self._mock_beeminder.get_goal.assert_any_call('slug')
+
+    def test_get_goal_returns_goal(self):
+        self._mock_beeminder.get_goal.return_value = {}
+
+        self.assertIsInstance(self._pyminder.get_goal('slug'), Goal)
+
 
 if __name__ == '__main__':
     unittest.main()

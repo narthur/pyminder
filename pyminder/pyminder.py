@@ -18,3 +18,6 @@ class Pyminder:
 
     def get_goals(self):
         return self._goal_factory.get_goals()
+
+    def get_goal(self, slug):
+        return self._goal_factory.get_goal(slug)
