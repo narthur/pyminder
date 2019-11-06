@@ -55,10 +55,16 @@ class Beeminder:
     def get_datapoints(self, goal_name):
         return self._call(f'/users/{self._user}/goals/{goal_name}/datapoints.json')
 
-    def create_datapoint(self, goal_name, value, timestamp, comment=None):
+    def create_datapoint(
+            self,
+            goal_name: str,
+            value: float,
+            unix_timestamp: float,
+            comment: str = None
+    ):
         return self._call(f'/users/{self._user}/goals/{goal_name}/datapoints.json', data={
             value: value,
-            timestamp: timestamp,
+            unix_timestamp: unix_timestamp,
             comment: comment
         }, method="POST")
 
@@ -97,7 +103,7 @@ class Beeminder:
             result = requests.put(url, data)
 
         if not result.status_code == requests.codes.ok:
-            raise Exception(f'API request failed with code {result.status_code}')
+            raise Exception(f'API request failed with code {result.status_code}: {result.text}')
 
         # self._persist_result(endpoint, result)
 
