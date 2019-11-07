@@ -63,9 +63,9 @@ class Beeminder:
             comment: str = None
     ):
         return self._call(f'/users/{self._user}/goals/{goal_name}/datapoints.json', data={
-            value: value,
-            unix_timestamp: unix_timestamp,
-            comment: comment
+            'value': value,
+            'unix_timestamp': unix_timestamp,
+            'comment': comment
         }, method="POST")
 
     def create_datapoints(self):
