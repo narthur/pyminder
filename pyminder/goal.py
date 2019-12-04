@@ -1,9 +1,11 @@
 import collections
 from pyminder.beeminder import Beeminder
+from pyminder.python import Python
 
 
 class Goal:
-    _beeminder = None
+    _beeminder: Beeminder
+    _python: Python
 
     _data = None
     _datapoints = None
@@ -11,8 +13,9 @@ class Goal:
     _dense_path = None
     _day = 60 * 60 * 24
 
-    def __init__(self, beeminder: Beeminder, data: dict):
+    def __init__(self, beeminder: Beeminder, python: Python, data: dict):
         self._beeminder = beeminder
+        self._python = python
 
         self._load_goal_data(data)
         self.reset_datapoints()
@@ -84,6 +87,23 @@ class Goal:
             t: rate if start <= t <= end else r
             for t, r in self._dense_path.items()
         })
+
+    def get_cross_over(self, threshold):
+        if not self.fullroad:
+            return False
+
+        date_now = self._python.date_now()
+        day_start = date_now.replace(hour=0, minute=0, second=0, microsecond=0)
+        start = int(day_start.timestamp())
+        end = self.fullroad[-1][0]
+        day = 24 * 60 * 60
+        times = list(range(start, end + 1, day))
+        filtered_times = [t for t in times if self.get_road_val(t) >= threshold]
+
+        if not filtered_times:
+            return False
+
+        return filtered_times[0]
 
     def get_road_val(self, time):
         if not self.fullroad:

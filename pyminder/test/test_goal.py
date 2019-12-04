@@ -1,6 +1,7 @@
 import unittest
 from pyminder.test.test_case import TestCase
 from pyminder.goal import Goal
+import datetime
 
 
 class TestGoal(TestCase):
@@ -279,6 +280,46 @@ class TestGoal(TestCase):
         })
 
         self.assertEqual(2, goal.get_needed(self._day * 1.9))
+
+    def test_get_cross_over(self):
+        goal = self._build_goal()
+
+        self.assertFalse(goal.get_cross_over(1))
+
+    def test_get_cross_over_returns_cross_over(self):
+        base = int(datetime.datetime.strptime('1-1-2019', '%m-%d-%Y').timestamp())
+        self._mock_python.date_now.return_value = datetime.datetime.fromtimestamp(base)
+
+        goal = self._build_goal({'fullroad': [
+            [base, 0, 0],
+            [base + self._day, 1, 1]
+        ]})
+
+        self.assertEqual(base + self._day, goal.get_cross_over(1))
+
+    def test_does_not_return_past_crossovers(self):
+        base = int(datetime.datetime.strptime('1-1-2019', '%m-%d-%Y').timestamp())
+        self._mock_python.date_now.return_value = datetime.datetime.fromtimestamp(base + self._day * 2)
+
+        goal = self._build_goal({'fullroad': [
+            [base, 0, 0],
+            [base + self._day, 1, 1],
+            [base + self._day * 2, 2, 1]
+        ]})
+
+        self.assertEqual(base + self._day * 2, goal.get_cross_over(1))
+
+    def test_returns_day_start_time(self):
+        base = int(datetime.datetime.strptime('1-1-2019', '%m-%d-%Y').timestamp())
+        self._mock_python.date_now.return_value = datetime.datetime.fromtimestamp(base + 1)
+
+        goal = self._build_goal({'fullroad': [
+            [base, 0, 0],
+            [base + self._day, 1, 1],
+            [base + self._day * 2, 2, 1]
+        ]})
+
+        self.assertEqual(base + self._day, goal.get_cross_over(1))
 
 
 if __name__ == '__main__':

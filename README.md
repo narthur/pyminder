@@ -36,16 +36,12 @@ needed = goal.get_needed(now)
 
 - Set up a virtual environment in PyCharm so you aren't using the global Python env. This will allow you to avoid
 conflicts of dependencies.
-- `pip install twine wheel`
 
 ## Deployment
 
 - Update version number in `setup.py`
-- `python setup.py sdist bdist_wheel`
-- Check that expected files are included: `tar tzf dist/pyminder-{ version }.tar.gz`
-- `twine check dist/*`
-- Test publish: `twine upload --repository-url https://test.pypi.org/legacy/ dist/*`
-- Publish using PyPi credentials: `twine upload dist/*`
+- `chmod +x deploy.sh`
+- `./deploy.sh`
 
 ## Information
 
