@@ -18,7 +18,11 @@ class Goal:
         self._python = python
 
         self._load_goal_data(data)
-        self.reset_datapoints()
+
+        try:
+            self.reset_datapoints()
+        except Exception:
+            pass
 
     def __getattr__(self, name):
         return self._get(name)

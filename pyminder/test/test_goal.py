@@ -1,4 +1,7 @@
 import unittest
+
+from natlibpy.factory import Factory
+
 from pyminder.test.test_case import TestCase
 from pyminder.goal import Goal
 import datetime
@@ -320,6 +323,10 @@ class TestGoal(TestCase):
         ]})
 
         self.assertEqual(base + self._day, goal.get_cross_over(1))
+
+    def test_init_without_beeminder_credentials(self):
+        factory = Factory()
+        factory.make(Goal, data={})
 
 
 if __name__ == '__main__':

@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="pyminder",
-    version="0.5.1",
+    version="0.6.1",
     description="Beeminder power tools library",
     long_description=README,
     long_description_content_type="text/markdown",
