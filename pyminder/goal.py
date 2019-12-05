@@ -19,11 +19,6 @@ class Goal:
 
         self._load_goal_data(data)
 
-        try:
-            self.reset_datapoints()
-        except Exception:
-            pass
-
     def __getattr__(self, name):
         return self._get(name)
 
@@ -33,6 +28,8 @@ class Goal:
         self._dense_path = self._build_dense_path()
 
     def stage_datapoint(self, value, time):
+        self._load_datapoints()
+
         self._datapoints.append({
             "timestamp": time,
             "value": value
@@ -62,6 +59,10 @@ class Goal:
 
         return road
 
+    def _load_datapoints(self):
+        if not self._datapoints:
+            self.reset_datapoints()
+
     def reset_datapoints(self):
         self._datapoints = self._beeminder.get_datapoints(self.slug)
 
@@ -71,6 +72,9 @@ class Goal:
         self._load_goal_data(data)
 
     def get_staged_datapoints(self):
+        if not self._datapoints:
+            return []
+
         return [p for p in self._datapoints if 'id' not in p]
 
     def get_needed(self, time):
@@ -80,6 +84,8 @@ class Goal:
         return max(critical_edge - self.get_data_sum(time), 0)
 
     def get_data_sum(self, time):
+        self._load_datapoints()
+
         return sum([p['value'] for p in self._datapoints if p['timestamp'] <= time])
 
     def stage_rate_change(self, rate, start=None, end=None):
