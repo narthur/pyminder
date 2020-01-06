@@ -9,6 +9,7 @@ class Goal:
 
     _data = None
     _datapoints = None
+    _staged_datapoints = None
     _sparse_path = None
     _dense_path = None
     _day = 60 * 60 * 24
@@ -19,6 +20,9 @@ class Goal:
 
         self._load_goal_data(data)
 
+        self._staged_datapoints = []
+        self._datapoints = []
+
     def __getattr__(self, name):
         return self._get(name)
 
@@ -28,9 +32,7 @@ class Goal:
         self._dense_path = self._build_dense_path()
 
     def stage_datapoint(self, value, time):
-        self._load_datapoints()
-
-        self._datapoints.append({
+        self._staged_datapoints.append({
             "timestamp": time,
             "value": value
         })
@@ -39,7 +41,7 @@ class Goal:
         for point in self.get_staged_datapoints():
             self._beeminder.create_datapoint(self.slug, point['value'], point['timestamp'])
 
-        self.reset_datapoints()
+        self._clear_cache()
 
     def commit_road(self):
         self._beeminder.update_goal(self.slug, roadall=self._build_roadall())
@@ -60,11 +62,16 @@ class Goal:
         return road
 
     def _load_datapoints(self):
-        if not self._datapoints:
+        if not self.get_all_datapoints():
             self.reset_datapoints()
 
     def reset_datapoints(self):
+        self._clear_cache()
         self._datapoints = self._beeminder.get_datapoints(self.slug)
+
+    def _clear_cache(self):
+        self._staged_datapoints = []
+        self._datapoints = []
 
     def reset_road(self):
         data = self._beeminder.get_goal(self.slug)
@@ -72,10 +79,7 @@ class Goal:
         self._load_goal_data(data)
 
     def get_staged_datapoints(self):
-        if not self._datapoints:
-            return []
-
-        return [p for p in self._datapoints if 'id' not in p]
+        return self._staged_datapoints
 
     def get_needed(self, time):
         time_adjusted = time - (self.deadline or 0)
@@ -85,8 +89,14 @@ class Goal:
 
     def get_data_sum(self, time):
         self._load_datapoints()
+        datapoints = self.get_all_datapoints()
 
-        return sum([p['value'] for p in self._datapoints if p['timestamp'] <= time])
+        return sum([p['value'] for p in datapoints if p['timestamp'] <= time])
+
+    def get_all_datapoints(self):
+        all_ = self._datapoints + self._staged_datapoints
+
+        return sorted(all_, key=lambda k: k['timestamp'])
 
     def stage_rate_change(self, rate, start=None, end=None):
         end = end if end else next(reversed(self._dense_path))

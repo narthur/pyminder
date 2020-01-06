@@ -191,7 +191,7 @@ class TestGoal(TestCase):
 
         self.assertEqual(1, len(goal.get_staged_datapoints()))
 
-    def test_refreshes_datapoints_on_commit(self):
+    def test_clears_cached_datapoints_on_commit(self):
         goal = self._build_goal()
 
         goal.stage_datapoint(1, 0)
