@@ -19,7 +19,7 @@ class Beeminder:
     # User
 
     def get_user(self):
-        return self._call(f'users/{self._user}/goals.json')
+        return self._call(f'users/{self._user}.json')
 
     # Goal
 
