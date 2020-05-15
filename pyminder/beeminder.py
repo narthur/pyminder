@@ -6,15 +6,19 @@ import json
 class Beeminder:
     _base_url = 'https://www.beeminder.com/api/v1/'
     _user = None
-    _token = None
+    _auth_token = None
+    _access_token = None
 
     # Auth
 
     def set_username(self, username):
         self._user = username
 
-    def set_token(self, token):
-        self._token = token
+    def set_auth_token(self, token):
+        self._auth_token = token
+
+    def set_access_token(self, token):
+        self._access_token = token
 
     # User
 
@@ -88,7 +92,10 @@ class Beeminder:
         if data is None:
             data = {}
 
-        data.update({'auth_token': self._token})
+        if self._auth_token:
+            data.update({'auth_token': self._auth_token})
+        elif self._access_token:
+            data.update({'access_token': self._access_token})
 
         url = f'{self._base_url}{endpoint}'
         result = None

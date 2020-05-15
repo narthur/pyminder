@@ -43,7 +43,7 @@ conflicts of dependencies.
 
 ## Deployment
 
-- Update version number in `setup.py`
+- Update version number in `setup.py` - [semantic versioning](https://semver.org/)
 - `chmod +x deploy.sh`
 - `./deploy.sh`
 

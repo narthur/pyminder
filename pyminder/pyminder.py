@@ -14,7 +14,7 @@ class Pyminder:
         self._goal_factory = goal_factory if goal_factory else factory.secure(GoalFactory)
 
         self._beeminder.set_username(user)
-        self._beeminder.set_token(token)
+        self._beeminder.set_auth_token(token)
 
     def get_goals(self):
         return self._goal_factory.get_goals()

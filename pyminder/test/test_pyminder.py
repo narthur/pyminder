@@ -21,7 +21,7 @@ class TestPyminder(TestCase):
         self._mock_beeminder.set_username.assert_called_with("username")
 
     def test_sets_token(self):
-        self._mock_beeminder.set_token.assert_called_with("token")
+        self._mock_beeminder.set_auth_token.assert_called_with("token")
 
     def test_get_goals_returns_goals(self):
         self._mock_beeminder.get_goals.return_value = [{}]
