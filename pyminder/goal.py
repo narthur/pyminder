@@ -31,15 +31,16 @@ class Goal:
         self._sparse_path = self._build_sparse_path()
         self._dense_path = self._build_dense_path()
 
-    def stage_datapoint(self, value, time):
+    def stage_datapoint(self, value, time, comment):
         self._staged_datapoints.append({
             "timestamp": time,
-            "value": value
+            "value": value,
+            "comment": comment
         })
 
     def commit_datapoints(self):
         for point in self.get_staged_datapoints():
-            self._beeminder.create_datapoint(self.slug, point['value'], point['timestamp'])
+            self._beeminder.create_datapoint(self.slug, point['value'], point['timestamp'], point['comment'])
 
         self._clear_cache()
 
