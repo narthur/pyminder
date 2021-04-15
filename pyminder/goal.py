@@ -31,7 +31,12 @@ class Goal:
         self._sparse_path = self._build_sparse_path()
         self._dense_path = self._build_dense_path()
 
-    def stage_datapoint(self, value, time, comment):
+    def stage_datapoint(
+            self,
+            value: float,
+            time: float = None,
+            comment: str = None
+    ):
         self._staged_datapoints.append({
             "timestamp": time,
             "value": value,
