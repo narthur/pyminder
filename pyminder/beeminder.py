@@ -63,7 +63,7 @@ class Beeminder:
             self,
             goal_name: str,
             value: float,
-            unix_timestamp: float,
+            unix_timestamp: float = None,
             comment: str = None
     ):
         return self._call(f'/users/{self._user}/goals/{goal_name}/datapoints.json', data={
