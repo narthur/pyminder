@@ -68,7 +68,7 @@ class Beeminder:
     ):
         return self._call(f'/users/{self._user}/goals/{goal_name}/datapoints.json', data={
             'value': value,
-            'unix_timestamp': unix_timestamp,
+            'timestamp': unix_timestamp,
             'comment': comment
         }, method="POST")
 
