@@ -14,6 +14,17 @@ class Goal:
     _dense_path = None
     _day = 60 * 60 * 24
 
+    def __repr__(self):
+        return f"<Goal: {self.slug}-- {self.title} (Unit: {self.gunits}-- {self.safesum})>"
+
+    def __str__(self):
+        return (
+            f"{self.slug}\n"
+            f" {self.title}\n"
+            f" {self.safesum}\n"
+            f" {self.gunits}\n"
+        )
+
     def __init__(self, beeminder: Beeminder, python: Python, data: dict):
         self._beeminder = beeminder
         self._python = python
